@@ -17,6 +17,7 @@ function Signup() {
         setError("")
         try {
             const userData = await authService.createAccount(data)
+            console.log(userData);
             if (userData) {
                 const userData = await authService.getCurrentUser()
                 if(userData) dispatch(login(userData));
@@ -71,6 +72,7 @@ function Signup() {
                         <Input
                         label="Password: "
                         type="password"
+                        name="password"
                         placeholder="Enter your password"
                         {...register("password", {
                             required: true,})}
