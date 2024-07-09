@@ -12,7 +12,18 @@ export default function Post() {
 
     const userData = useSelector((state) => state.auth.userData);
 
-    const isAuthor = post && userData ? post.userId === userData.$id : false;
+    // Add detailed console logs for debugging
+    useEffect(() => {
+        console.log("post:", post);
+        console.log("userData:", userData);
+        if (post && userData) {
+            console.log("post.userId:", post.userId);
+            console.log("userData.$id:", userData.$id);
+            console.log("Comparison result:", post.userId === userData.$id);
+        }
+    }, [post, userData]);
+
+    const isAuthor = post && userData ? post.userid === userData.$id : false;
 
     useEffect(() => {
         if (slug) {
@@ -26,7 +37,7 @@ export default function Post() {
     const deletePost = () => {
         appwriteService.deletePost(post.$id).then((status) => {
             if (status) {
-                appwriteService.deleteFile(post.featuredImage);
+                appwriteService.deleteFile(post.featuredimage);
                 navigate("/");
             }
         });
@@ -37,7 +48,7 @@ export default function Post() {
             <Container>
                 <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
                     <img
-                        src={appwriteService.getFilePreview(post.featuredImage)}
+                        src={appwriteService.getFilePreview(post.featuredimage)}
                         alt={post.title}
                         className="rounded-xl"
                     />
@@ -60,7 +71,7 @@ export default function Post() {
                 </div>
                 <div className="browser-css">
                     {parse(post.content)}
-                    </div>
+                </div>
             </Container>
         </div>
     ) : null;
